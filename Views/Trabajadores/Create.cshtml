@@ -1,0 +1,137 @@
+﻿@model TrabajadoresPrueba.Data.Models.Trabajadore
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 style="color:white">Agregar Trabajador</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group row">
+                <label style="color:white; font-size:1.2em" asp-for="TipoDocumento" class="control-label col-4 "> Tipo Documento</label>
+                @*<input asp-for="TipoDocumento" class="form-control" />*@
+                <div class="col">
+                    <select asp-for="TipoDocumento" class="form-control col " asp-items="ViewBag.documentos"></select>
+                    <span asp-validation-for="TipoDocumento" class="text-danger"></span>
+                </div>
+                
+            </div>
+            <br />
+            <div class="form-group row">
+                <label style="color:white; font-size:1.2em" asp-for="NumeroDocumento" class="control-label col-4">Numero Documento</label>
+                <div class="col">
+                <input asp-for="NumeroDocumento" class="form-control" />
+                <span asp-validation-for="NumeroDocumento" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label style="color:white; font-size:1.2em" asp-for="Nombres" class="control-label col-4"></label>
+                <div class="col">
+                <input asp-for="Nombres" class="form-control" />
+                <span asp-validation-for="Nombres" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label style="color:white; font-size:1.2em" asp-for="Sexo" class="control-label col-4"></label>
+                @*<input asp-for="Sexo" class="form-control" />*@
+                    <div class="col">
+                    <input type="radio" name="Sexo" value="M" id="M" checked="checked" /><label style="color:white" for="M">M</label>
+                    <input type="radio" name="Sexo" value="F"  id="F" /><label style="color:white" for="F">F</label>
+                <span asp-validation-for="Sexo" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label style="color:white; font-size:1.2em" asp-for="IdDepartamento" class="control-label col-4">Departamento</label>
+                <div class="col">
+                    <select id="ddlDepartamentos" asp-for="IdDepartamento" class="form-control" asp-items="ViewBag.depItems">,
+                        -- Seleccionar Departamento --
+                    </select>
+                 @*   @Html.DropDownList("ddlDepartamentos", ViewBag.depItems as List<SelectListItem>,
+                    " -- Seleccionar Departamento --", new { @class = "form-control" })*@
+                    <span asp-validation-for="IdDepartamento" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label style="color:white; font-size:1.2em"  asp-for="IdProvincia" class="control-label col-4">Provincia</label>
+                            <div class="col">
+                    <select id="ddlProvincias" asp-for="IdProvincia" class="form-control" asp-items="ViewBag.provItems"></select>
+                    @*@Html.DropDownList("ddlProvincias", new List<SelectListItem>(),
+                    " -- Seleccionar Provincias --", new { @class = "form-control" })*@
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label style="color:white" asp-for="IdDistrito" class="control-label col-4">Distrito</label>
+                                <div class="col">
+                    <select id="ddlDistritos" asp-for="IdDistrito" class="form-control" asp-items="ViewBag.disitem"></select>
+                    @*@Html.DropDownList("ddlDistritos", new List<SelectListItem>(),
+                    " -- Seleccionar Distritos --", new { @class = "form-control" })*@
+                </div>
+            </div>
+            <br />
+                <div class="form-group col">
+                    <input type="submit" value="Agregar" class="btn btn-primary" />
+                </div>
+        </form>
+    </div>
+</div>
+<br />
+<div>
+    <a asp-action="Index"><button class="btn btn-secondary">Regresar </button></a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        $(document).ready(function () {
+            $("#ddlDepartamentos").change(function () {
+                $.get("/Trabajadores/GetProvinciaList", { IdDepartamento: $("#ddlDepartamentos").val() }, function (data) {
+                    // VACIAMOS EL DropDownList
+                    $("#ddlProvincias").empty();
+                    // AÑADIMOS UN NUEVO label CON EL NOMBRE DEL ELEMENTO SELECCIONADO
+                    $("#ddlProvincias").append("<option value> -- Seleccionar Provincias de " + $("#ddlDepartamentos option:selected").text() + " --</option>")
+                    // CONSTRUIMOS EL DropDownList A PARTIR DEL RESULTADO Json (data)
+                    $.each(data, function (index, row) {
+                        $("#ddlProvincias").append("<option value='" + row.id + "'>" + row.nombreProvincia + "</option>")
+                        console.log(row.id);
+                    });
+
+                    $("#ddlDistritos").empty();
+                    // AÑADIMOS UN NUEVO label CON EL NOMBRE DEL ELEMENTO SELECCIONADO
+                    $("#ddlDistritos").append("<option value> -- Primero seleccione Provincia  --</option>")
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("#ddlProvincias").change(function () {
+                $.get("/Trabajadores/GetDistritoList", { IdProvincia: $("#ddlProvincias").val() }, function (data) {
+                    // VACIAMOS EL DropDownList
+                    $("#ddlDistritos").empty();
+                    // AÑADIMOS UN NUEVO label CON EL NOMBRE DEL ELEMENTO SELECCIONADO
+                    $("#ddlDistritos").append("<option value> -- Seleccionar Distrito de " + $("#ddlProvincias option:selected").text() + " --</option>")
+                    // CONSTRUIMOS EL DropDownList A PARTIR DEL RESULTADO Json (data)
+                    $.each(data, function (index, row) {
+                        $("#ddlDistritos").append("<option value='" + row.id + "'>" + row.nombreDistrito + "</option>")
+                        console.log(row.Id);
+                    });
+                });
+            });
+
+
+
+        });
+
+        
+    </script>
+}

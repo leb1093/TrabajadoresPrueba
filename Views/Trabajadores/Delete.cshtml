@@ -1,0 +1,91 @@
+﻿@model TrabajadoresPrueba.Data.Models.Trabajadore
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 style="color:white">Eliminar</h1>
+
+<h3 style="color:white">Esta seguro de eliminar al siguiente trabajador?</h3>
+<div>
+    <h4></h4>
+    <hr />
+    <dl class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <dt class="col-5" style="color:darkgray; font-size:1.2em">
+                    @*@Html.DisplayNameFor(model => model.TipoDocumento)*@
+                    Tipo de Documento:
+                </dt>
+                <dd class="col" style="color:white; font-size:1.2em">
+                    @Html.DisplayFor(model => model.TipoDocumento)
+                </dd>
+            </div>
+
+            <div class="row">
+                <dt class="col-5" style="color:darkgray; font-size:1.2em">
+                    @*@Html.DisplayNameFor(model => model.NumeroDocumento)*@
+                    Numero de Documento:
+                </dt>
+                <dd class="col" style="color:white; font-size:1.2em">
+                    @Html.DisplayFor(model => model.NumeroDocumento)
+                </dd>
+            </div>
+            <div class="row">
+                <dt class="col-5" style="color:darkgray; font-size:1.2em">
+                    @*@Html.DisplayNameFor(model => model.Nombres)*@
+                    Nombres:
+                </dt>
+                <dd class="col" style="color:white; font-size:1.2em">
+                    @Html.DisplayFor(model => model.Nombres)
+                </dd>
+            </div>
+            <div class="row">
+                <dt class="col-5" style="color:darkgray; font-size:1.2em">
+                    @*@Html.DisplayNameFor(model => model.Sexo)*@
+                    Genero:
+                </dt>
+                <dd class="col" style="color:white; font-size:1.2em">
+                    @Html.DisplayFor(model => model.Sexo)
+                </dd>
+            </div>
+            <div class="row">
+                <dt class="col-5" style="color:darkgray; font-size:1.2em">
+                    @*@Html.DisplayNameFor(model => model.IdDepartamentoNavigation)*@
+                    Departamento:
+                </dt>
+                <dd class="col" style="color:white; font-size:1.2em">
+                    @Html.DisplayFor(model => model.IdDepartamentoNavigation.NombreDepartamento)
+                </dd>
+            </div>
+            <div class="row">
+                <dt class="col-5" style="color:darkgray; font-size:1.2em">
+                    @*@Html.DisplayNameFor(model => model.IdProvinciaNavigation)*@
+                    Provincia:
+                </dt>
+                <dd class="col" style="color:white; font-size:1.2em">
+                    @Html.DisplayFor(model => model.IdProvinciaNavigation.NombreProvincia)
+                </dd>
+            </div>
+            <div class="row">
+                <dt class="col-5" style="color:darkgray; font-size:1.2em">
+                    @*@Html.DisplayNameFor(model => model.IdDistritoNavigation)*@
+                    Distrito:
+                </dt>
+                <dd class="col" style="color:white; font-size:1.2em">
+                    @Html.DisplayFor(model => model.IdDistritoNavigation.NombreDistrito)
+                </dd>
+            </div>
+        </div>
+    </dl>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        
+    </form>
+    <br />
+    <a asp-action="Index"><button class="btn btn-secondary">Regresar </button></a>
+</div>
+    
+

@@ -1,0 +1,139 @@
+﻿@model IEnumerable<TrabajadoresPrueba.Data.Models.Trabajadore>
+
+@{
+    ViewData["Title"] = "Trabajadores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="display-3"style="color:white">Trabajadores </h1>
+
+<p>
+    @*<a asp-action="Create">Agregar Trabajador</a>*@
+    
+    <a asp-action="Create"><button class="btn btn-primary">Agregar <i class="bi bi-plus-circle" style="font-size:1rem"></i></button></a>
+</p>
+<div class="table-responsive">
+    <table class="table table-hover table-striped table-dark">
+        <thead class="">
+        <tr>
+            @*<th>
+                @Html.DisplayNameFor(model => model.TipoDocumento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroDocumento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sexo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdDepartamentoNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdDistritoNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProvinciaNavigation)
+            </th>*@
+
+            <th>
+                Tipo Documento
+            </th>
+            <th>
+                Numero Documento
+            </th>
+            <th>
+                Nombres
+            </th>
+            <th>
+                Genero
+            </th>
+            <th>
+                Departamento
+            </th>
+            <th>
+                Provincia
+            </th>
+            <th>
+                Distrito
+            </th>
+            <th>
+                Acciones
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr id="row_@item.Id">
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoDocumento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroDocumento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sexo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdDepartamentoNavigation.NombreDepartamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProvinciaNavigation.NombreProvincia)
+                
+            </td>
+            <td>
+               @Html.DisplayFor(modelItem => item.IdDistritoNavigation.NombreDistrito)
+            </td>
+            <td>
+                    
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-fill" style="font-size:1rem"></i></a> |
+                    <a asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-search" style="font-size:1rem"></i></a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash-fill" style="font-size:1rem" ></i>
+                    </a>
+            </td>
+        </tr>
+}
+
+        @*@foreach (var item in ViewBag.trabajadores)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.TipoDocumento
+                </td>
+                <td>
+                    @item.NumeroDocumento
+                </td>
+                <td>
+                    @item.Nombres
+                </td>
+                <td>
+                    @item.Sexo
+                </td>
+                <td>
+                    @item.NombreDepartamento
+                </td>
+                <td>
+                    @item.NombreProvincia
+                </td>
+                <td>
+                    @item.NombreDistrito
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }*@
+    </tbody>
+</table>
+</div>
+

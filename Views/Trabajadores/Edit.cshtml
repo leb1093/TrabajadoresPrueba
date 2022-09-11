@@ -1,0 +1,134 @@
+﻿@model TrabajadoresPrueba.Data.Models.Trabajadore
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 style ="color:white">Editar trabajador</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group row">
+                <label asp-for="TipoDocumento" style="color:white; font-size:1.2em" class="control-label col-4"></label>
+                <div class="col">
+                    <select asp-for="TipoDocumento" class="form-control col" asp-items="ViewBag.documentos"></select>
+                    @*<input asp-for="TipoDocumento" class="form-control" />*@
+                    <span asp-validation-for="TipoDocumento" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label asp-for="NumeroDocumento" style="color:white; font-size:1.2em" class="control-label col-4"></label>
+                <div class="col">
+                    <input asp-for="NumeroDocumento" class="form-control" />
+                    <span asp-validation-for="NumeroDocumento" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label asp-for="Nombres" style="color:white; font-size:1.2em" class="control-label col-4"></label>
+                <div class="col">
+                    <input asp-for="Nombres" class="form-control" />
+                    <span asp-validation-for="Nombres" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label asp-for="Sexo" style="color:white; font-size:1.2em" class="control-label col-4"></label>
+                @*<input asp-for="Sexo" class="form-control" />*@
+                <div class="col">
+                    <input type="radio" asp-for="Sexo" name="Sexo" value="M" /><label style="color:white" for="M">M</label>
+                    <input type="radio" asp-for="Sexo" name="Sexo" value="F" /><label style="color:white" for="F">F</label>
+                    <span asp-validation-for="Sexo" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label asp-for="NombreDepartamento" style="color:white; font-size:1.2em" class="control-label col-4"></label>
+                <div class="col">
+                    <select id="ddlDepartamentos" asp-for="IdDepartamento" class="form-control" asp-items="ViewBag.depItems"></select>
+                    <span asp-validation-for="IdDepartamento" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label asp-for="IdProvincia" style="color:white; font-size:1.2em" class="control-label col-4"></label>
+                <div class="col">
+                    <select id="ddlProvincias" asp-for="IdProvincia" class="form-control" asp-items="ViewBag.provitem"></select>
+                    <span asp-validation-for="IdProvincia" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label asp-for="IdDistrito" style="color:white; font-size:1.2em" class="control-label col-4"></label>
+                <div class="col">
+                    <select id="ddlDistritos" asp-for="IdDistrito" class="form-control" asp-items="ViewBag.disitem"></select>
+                    <span asp-validation-for="IdDistrito" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Modificar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br/>
+
+<div>
+    <a asp-action="Index"><button class="btn btn-secondary">Regresar </button></a>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        $(document).ready(function () {
+            $("#ddlDepartamentos").change(function () {
+                $.get("/Trabajadores/GetProvinciaList", { IdDepartamento: $("#ddlDepartamentos").val() }, function (data) {
+                    // VACIAMOS EL DropDownList
+                    $("#ddlProvincias").empty();
+                    // AÑADIMOS UN NUEVO label CON EL NOMBRE DEL ELEMENTO SELECCIONADO
+                    $("#ddlProvincias").append("<option value> -- Seleccionar Provincias de " + $("#ddlDepartamentos option:selected").text() + " --</option>")
+                    // CONSTRUIMOS EL DropDownList A PARTIR DEL RESULTADO Json (data)
+                    $.each(data, function (index, row) {
+                        $("#ddlProvincias").append("<option value='" + row.id + "'>" + row.nombreProvincia + "</option>")
+                        console.log(row.id);
+                    });
+
+                    $("#ddlDistritos").empty();
+                    // AÑADIMOS UN NUEVO label CON EL NOMBRE DEL ELEMENTO SELECCIONADO
+                    $("#ddlDistritos").append("<option value> -- Primero seleccione Provincia  --</option>")
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("#ddlProvincias").change(function () {
+                $.get("/Trabajadores/GetDistritoList", { IdProvincia: $("#ddlProvincias").val() }, function (data) {
+                    // VACIAMOS EL DropDownList
+                    $("#ddlDistritos").empty();
+                    // AÑADIMOS UN NUEVO label CON EL NOMBRE DEL ELEMENTO SELECCIONADO
+                    $("#ddlDistritos").append("<option value> -- Seleccionar Distrito de " + $("#ddlProvincias option:selected").text() + " --</option>")
+                    // CONSTRUIMOS EL DropDownList A PARTIR DEL RESULTADO Json (data)
+                    $.each(data, function (index, row) {
+                        $("#ddlDistritos").append("<option value='" + row.id + "'>" + row.nombreDistrito + "</option>")
+                        console.log(row.Id);
+                    });
+                });
+            });
+
+
+
+        });
+
+
+    </script>
+}
